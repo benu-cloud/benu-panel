@@ -1,0 +1,5 @@
+.remotePageLoading .ant-spin-text{
+    display: inline-block !important;
+    margin-left: 18px;
+    font-size: 17px;
+}

@@ -1,15 +1,15 @@
-import MainLayout from "./Layout/Main";
+import MainLayout from '../Layout/Main';
 
-const App = () => {
+const NotFoundPage = () => {
   return (
     <div className="App">
       <MainLayout>
         <div className="test">
-          Hello world
+          404!
         </div>
       </MainLayout>
     </div>
   );
 }
 
-export default App;
+export default NotFoundPage;
