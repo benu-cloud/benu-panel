@@ -1,0 +1,14 @@
+.main-layout-form {
+    text-align: center;
+    margin-top: 250px;
+}
+
+.main-layout-form img{
+    width: 70%;
+    margin-bottom: 30px;
+}
+
+.main-layout-form h4 {
+    text-transform: capitalize;
+    letter-spacing: 2px;
+}

@@ -1,5 +1,5 @@
 import { createBrowserRouter } from "react-router-dom";
-import MainPage from "../Pages/Mainpage";
+import MainPage from "../Pages/MainPage";
 import RemotePage from "../Pages/RemotePage";
 import NotFoundPage from "../Pages/NotFoundPage";
 

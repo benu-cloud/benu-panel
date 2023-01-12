@@ -1,5 +1,5 @@
 import React from 'react';
-import { Layout, theme } from 'antd';
+import { Layout, ConfigProvider, theme } from 'antd';
 import FooterLayout from '../Footer';
 import HeaderLayout from '../Header';
 
@@ -7,33 +7,37 @@ import './Main.css';
 
 const { Content } = Layout;
 
-const MainLayout = ({ children, renderFotter = true, renderHeader = true }) => {
+const MainLayout = ({ children, renderFotter = false, renderHeader = false }) => {
     const {
         token: { colorBgContainer },
     } = theme.useToken();
     return (
-        <Layout className="layout">
-            {
-                renderHeader ?
-                    <HeaderLayout />
-                    : null
-            }
-            <Content>
-                <div
-                    className="site-layout-content"
-                    style={{
-                        background: colorBgContainer,
-                    }}
-                >
-                    {children}
-                </div>
-            </Content>
-            {
-                renderFotter ?
-                    <FooterLayout />
-                    : null
-            }
-        </Layout>
+        <ConfigProvider
+            theme={{ token: { colorPrimary: "#000000", "borderRadius": 10 } }}
+        >
+            <Layout className="layout">
+                {
+                    renderHeader ?
+                        <HeaderLayout />
+                        : null
+                }
+                <Content>
+                    <div
+                        className="site-layout-content"
+                        style={{
+                            background: colorBgContainer,
+                        }}
+                    >
+                        {children}
+                    </div>
+                </Content>
+                {
+                    renderFotter ?
+                        <FooterLayout />
+                        : null
+                }
+            </Layout>
+        </ConfigProvider>
     );
 };
 export default MainLayout;
