@@ -14,7 +14,7 @@ const MainPage = () => {
         <Row justify={'center'}>
           <Col md={4} sm={10} xs={15} className="main-layout-form">
             <img src={logo} alt="benu logo type remote connection" />
-            <Title level={3}>Login to your remote</Title>
+            <Title level={4}>Login to your remote</Title>
             <ConnectionRequestForm />
           </Col>
         </Row>

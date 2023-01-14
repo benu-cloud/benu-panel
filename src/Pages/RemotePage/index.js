@@ -1,17 +1,19 @@
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { Spin, Row, Col } from 'antd';
-import { LoadingOutlined } from '@ant-design/icons';
+import { Row, Col, Typography } from 'antd';
 
 import MainLayout from '../../Layout/Main';
 import LiveStream from '../../Components/LiveStream';
+import RemoteMenu from '../../Components/RemoteMenu';
 import "./index.css";
-const loadingIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
+import loadingLogo from "../../Assets/logo-loading.png";
+
+const { Title } = Typography;
 
 const RemotePage = () => {
     let { uuid, id } = useParams();
     let navigate = useNavigate();
-    const [loading, setloading] = useState(true);
+    const [loading, setloading] = useState(false);
     // const uuid = ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, c =>
     //     (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
     // );
@@ -22,22 +24,23 @@ const RemotePage = () => {
         // }
     }, [])
     return (
-        <div className="App">
-            <MainLayout renderHeader={false} renderFotter={false}>
-                <Row style={{ padding: '0px' }}>
-                    <Col span={24}>
-                        <LiveStream otherPeerid={id} peerid={uuid} />
-                        {
-                            loading
-                                ? <div style={{ height: '90vh', textAlign: 'center', padding: '25%' }}>
-                                    <Spin className="remotePageLoading" size="large" tip="Loading..." indicator={loadingIcon} />
-                                </div>
-                                : null
-                        }
-                    </Col>
-                </Row>
-            </MainLayout>
-        </div>
+        <MainLayout renderHeader={false} renderFotter={false}>
+            <Row style={{ padding: '0px' }}>
+                <Col span={24}>
+                    {
+                        loading
+                            ? <div className="remotePageLoading">
+                                <img src={loadingLogo} alt="benu loading icon" />
+                                <Title level={4}>Loading...</Title>
+                            </div>
+                            : <>
+                                <RemoteMenu />
+                                <LiveStream otherPeerid={id} peerid={uuid} />
+                            </>
+                    }
+                </Col>
+            </Row>
+        </MainLayout>
     );
 }
 

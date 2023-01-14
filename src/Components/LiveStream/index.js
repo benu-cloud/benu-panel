@@ -1,5 +1,8 @@
 import React from "react";
 import { useEffect, useRef } from "react";
+import KeyboardInput from "../UserInputs/Keyboard";
+import MouseInput from "../UserInputs/Mouse";
+import './index.css';
 
 function onIceCandidate(type, event, ws, otherPeerid) {
     ws.send(JSON.stringify({
@@ -122,11 +125,12 @@ const LiveStream = ({ peerid, otherPeerid }) => {
             <video
                 ref={videoPLayer}
                 autoPlay
-                controls=""
+                controls
                 preload="none"
-                className="live-stream-video-layer"
-            >
-            </video>
+                className="remote-stream-player"
+            />
+            <KeyboardInput />
+            <MouseInput />
         </>
     );
 }

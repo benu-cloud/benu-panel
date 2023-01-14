@@ -1,5 +1,29 @@
-.remotePageLoading .ant-spin-text{
-    display: inline-block !important;
-    margin-left: 18px;
+.remotePageLoading {
+    /* display: inline-block !important;
+    margin-left: 18px; */
     font-size: 17px;
+    height: 90vh;
+    text-align: center;
+    padding-top: 35vh;
+}
+
+.remotePageLoading img {
+    width: 80px;
+    margin-bottom: 12px;
+    animation: rotation 2s infinite linear;
+}
+
+.remotePageLoading h4 {
+    text-transform: uppercase;
+    letter-spacing: 3px;
+}
+
+@keyframes rotation {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(359deg);
+    }
 }

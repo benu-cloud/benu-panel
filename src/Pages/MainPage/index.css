@@ -9,6 +9,5 @@
 }
 
 .main-layout-form h4 {
-    text-transform: capitalize;
-    letter-spacing: 2px;
+    text-transform: uppercase;
 }
