@@ -1,7 +1,8 @@
 import React, { useState } from "react";
-import { FullscreenOutlined, WifiOutlined, DownOutlined, UpOutlined } from '@ant-design/icons';
-import { Col, Row, Typography } from 'antd';
 import { useNavigate } from "react-router-dom";
+import { Col, Row, Typography } from 'antd';
+import { FullscreenOutlined, WifiOutlined, DownOutlined, UpOutlined } from '@ant-design/icons';
+import emitter from '../../Modules/emitter';
 import './index.css';
 import logo from "../../Assets/benu-logo-type-black.png";
 
@@ -29,14 +30,14 @@ const RemoteMenu = ({ fullScreen, toggleFullScreen, sendACD }) => {
                                 <Col span={20}>
                                     {
                                         fullScreen
-                                        ? <>Exit full screen</>
-                                        : <>Full screen</>
+                                            ? <>Exit full screen</>
+                                            : <>Full screen</>
                                     }
                                 </Col>
                                 <Col span={2}><FullscreenOutlined /></Col>
                             </Row>
                         </Col>
-                        <Col span={24} className="remote-menu-item" onClick={() => sendACD()}>
+                        <Col span={24} className="remote-menu-item" onClick={() => emitter.emit('sendACD')}>
                             <Row>
                                 <Col span={24}>Send Alt+Crtl+Del</Col>
                             </Row>

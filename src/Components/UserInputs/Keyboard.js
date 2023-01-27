@@ -1,9 +1,10 @@
 import { useEffect } from "react";
+import emitter from '../../Modules/emitter';
 
 const KeyboardInput = ({ sendToServer }) => {
-
     useEffect(() => {
         let pressedKey = {};
+        const adcEvent = emitter.addListener('sendACD', () => { console.log('get Alt+Ctrl+Del') });
         let keyUpHandler = (e) => {
             e.preventDefault();
             if (e.code in pressedKey) {
@@ -33,7 +34,8 @@ const KeyboardInput = ({ sendToServer }) => {
         return () => {
             document.removeEventListener('keydown', keyDownHandler, false);
             document.removeEventListener('keyup', keyUpHandler, false);
-            window.removeEventListener("blur", onBlur)
+            window.removeEventListener("blur", onBlur);
+            adcEvent.remove();
         }
     }, []);
 }
