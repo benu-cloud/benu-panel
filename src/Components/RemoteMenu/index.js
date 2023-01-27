@@ -8,7 +8,7 @@ import logo from "../../Assets/benu-logo-type-black.png";
 const { Text } = Typography;
 
 
-const RemoteMenu = ({ toggleFullScreen, sendACD }) => {
+const RemoteMenu = ({ fullScreen, toggleFullScreen, sendACD }) => {
     let navigate = useNavigate();
     const [menuCollaps, setMenuCollaps] = useState(false);
 
@@ -26,7 +26,13 @@ const RemoteMenu = ({ toggleFullScreen, sendACD }) => {
                     ? <>
                         <Col span={24} className="remote-menu-item" onClick={() => toggleFullScreen()}>
                             <Row>
-                                <Col span={20}>FullScreen</Col>
+                                <Col span={20}>
+                                    {
+                                        fullScreen
+                                        ? <>Exit full screen</>
+                                        : <>Full screen</>
+                                    }
+                                </Col>
                                 <Col span={2}><FullscreenOutlined /></Col>
                             </Row>
                         </Col>

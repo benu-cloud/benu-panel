@@ -24,10 +24,11 @@ const MouseInput = ({ sendToServer }) => {
 
 
     const makePointerLock = () => {
-        document.addEventListener('pointerlockchange', lockChangeAlert, false);
-        document.addEventListener('mozpointerlockchange', lockChangeAlert, false);
         divRef.current.requestPointerLock = divRef.current.requestPointerLock || divRef.current.mozRequestPointerLock;
-        divRef.current.requestPointerLock();
+        divRef.current.requestPointerLock().then(() => {
+            document.addEventListener('pointerlockchange', lockChangeAlert, false);
+            document.addEventListener('mozpointerlockchange', lockChangeAlert, false);
+        }, () => {});
     }
     const lockChangeAlert = () => {
         if (document.pointerLockElement === divRef.current || document.mozPointerLockElement === divRef.current) {
