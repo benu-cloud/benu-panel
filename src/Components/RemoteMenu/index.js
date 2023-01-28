@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Col, Row, Typography } from 'antd';
 import { FullscreenOutlined, WifiOutlined, DownOutlined, UpOutlined } from '@ant-design/icons';
 import emitter from '../../Modules/emitter';
+import StreamStata from "../StreamState";
 import './index.css';
 import logo from "../../Assets/benu-logo-type-black.png";
 
@@ -22,7 +23,7 @@ const RemoteMenu = ({ fullScreen, toggleFullScreen, sendACD, loading }) => {
                         <Col span={20} className="remote-menu-item">
                             <Row onClick={() => setMenuCollaps(!menuCollaps)}>
                                 <Col span={12}><img src={logo} /></Col>
-                                <Col span={12}><WifiOutlined />Good</Col>
+                                <StreamStata />
                             </Row>
                         </Col>
                         <Col span={4} className="collaps-icon-box" onClick={() => setMenuCollaps(!menuCollaps)} >{menuCollaps ? <DownOutlined /> : <UpOutlined />}</Col>

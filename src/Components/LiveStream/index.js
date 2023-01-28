@@ -34,13 +34,12 @@ const LiveStream = ({ otherPeerid, loading, setLoading }) => {
 
     return (
         <>
-            {/* <button onClick={startcall}>start call</button> */}
             <video
                 ref={videoPLayer}
                 autoPlay
                 preload="none"
                 className="remote-stream-player"
-                style={{ visibility: loading ? 'hidden' : 'visible' }}
+                style={{ display: loading ? 'none' : 'block' }}
             />
             {
                 loading
