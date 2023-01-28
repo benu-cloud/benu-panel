@@ -11,15 +11,16 @@ const onIceCandidate = (type, event, ws, otherPeerid) => {
     }));
 }
 
-const useSignaling = (peerid, otherPeerid) => {
+const useSignaling = (otherPeerid) => {
     const [videoPeerConnectionState, setVideoPeerConnectionState] = useState({});
     const [audioPeerConnectionState, setAudioPeerConnectionState] = useState({});
     useEffect(() => {
+
+        let peerid;
         const videoPeerConnection = new RTCPeerConnection();
         const audioPeerConnection = new RTCPeerConnection();
 
         const ws = new WebSocket(`wss://signaling.darkube.app/ws`);
-        let caller;
 
         videoPeerConnection.addEventListener('icecandidate', e => onIceCandidate("video", e, ws, otherPeerid));
         audioPeerConnection.addEventListener('icecandidate', e => onIceCandidate("audio", e, ws, otherPeerid));
@@ -28,12 +29,7 @@ const useSignaling = (peerid, otherPeerid) => {
         setVideoPeerConnectionState(videoPeerConnection);
 
         ws.onopen = () => {
-            ws.send(JSON.stringify({
-                type: "login",
-                payload: {
-                    name: peerid
-                }
-            }));
+            ws.send(JSON.stringify({ type: "login" }));
         };
         ws.onmessage = (msg) => {
             try {
@@ -41,27 +37,31 @@ const useSignaling = (peerid, otherPeerid) => {
                 if (type) {
                     switch (type) {
                         case "login":
-                            videoPeerConnection.createOffer()
-                                .then((offer) => videoPeerConnection.setLocalDescription(offer))
-                                .then(() => {
-                                    audioPeerConnection.createOffer()
-                                        .then((offer) => audioPeerConnection.setLocalDescription(offer))
-                                        .then(() => {
-                                            ws.send(JSON.stringify({
-                                                type: "offer",
-                                                payload: {
-                                                    name: otherPeerid,
-                                                    offer: {
-                                                        video: videoPeerConnection.localDescription,
-                                                        audio: audioPeerConnection.localDescription,
+                            if (payload.success) {
+                                peerid = payload.id;
+                                videoPeerConnection.createOffer()
+                                    .then((offer) => videoPeerConnection.setLocalDescription(offer))
+                                    .then(() => {
+                                        audioPeerConnection.createOffer()
+                                            .then((offer) => audioPeerConnection.setLocalDescription(offer))
+                                            .then(() => {
+                                                ws.send(JSON.stringify({
+                                                    type: "offer",
+                                                    payload: {
+                                                        name: otherPeerid,
+                                                        offer: {
+                                                            video: videoPeerConnection.localDescription,
+                                                            audio: audioPeerConnection.localDescription,
+                                                        }
                                                     }
-                                                }
-                                            }))
-                                        });
-                                });
+                                                }))
+                                            });
+                                    });
+                            } else {
+                                ws.send(JSON.stringify({ type: "login" }));
+                            }
                             break;
                         case "offer":
-                            caller = payload.name;
                             var { video, audio } = payload.offer;
                             console.log(video, audio);
                             if (video && audio) {
@@ -111,6 +111,8 @@ const useSignaling = (peerid, otherPeerid) => {
                             break;
                         case "leave":
                             break;
+                        default:
+                            break
                     }
                 }
             } catch (error) {
@@ -128,11 +130,10 @@ const useSignaling = (peerid, otherPeerid) => {
         return () => {
             console.log('useEffect inside useSignailng unmount');
             closeWebsocket();
-            // ws.close();
             videoPeerConnection.close();
             audioPeerConnection.close();
         }
-    }, [peerid, otherPeerid]);
+    }, [otherPeerid]);
 
     return {
         videoPeerConnection: videoPeerConnectionState,
