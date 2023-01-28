@@ -10,11 +10,7 @@ export default createBrowserRouter([
         element: <MainPage />,
     },
     {
-        path: "/:uuid",
-        element: <RemotePage />,
-    },
-    {
-        path: "/:uuid/:id",
+        path: "/:id",
         element: <RemotePage />,
     },
     {
