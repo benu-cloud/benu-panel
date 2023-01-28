@@ -5,7 +5,7 @@ import MouseInput from "../UserInputs/Mouse";
 import useSignaling from "../../Hooks/Signaling";
 import './index.css';
 
-const LiveStream = ({ otherPeerid }) => {
+const LiveStream = ({ otherPeerid, loading, setLoading }) => {
     const videoPLayer = useRef(null);
     const datachannel = useRef(null);
     console.log('main');
@@ -17,16 +17,19 @@ const LiveStream = ({ otherPeerid }) => {
     useEffect(() => {
         console.log('useEffect inside main');
         const stream = new MediaStream();
-        // videoPLayer.current.srcObject = stream;
-        // videoPeerConnection.ontrack = (event) => {
-        //     stream.addTrack(event.track);
-        // };
-        // audioPeerConnection.ontrack = (event) => {
-        //     stream.addTrack(event.track);
-        // };
+
+        videoPLayer.current.srcObject = stream;
+        videoPeerConnection.ontrack = (event) => {
+            stream.addTrack(event.track);
+            setLoading(false);
+        };
+        audioPeerConnection.ontrack = (event) => {
+            stream.addTrack(event.track);
+        };
         audioPeerConnection.ondatachannel = (obj) => {
             datachannel.current = obj.channel;
         }
+        setTimeout(() => setLoading(false), 3000);
     }, [videoPeerConnection, audioPeerConnection])
 
     return (
@@ -35,12 +38,18 @@ const LiveStream = ({ otherPeerid }) => {
             <video
                 ref={videoPLayer}
                 autoPlay
-                controls
                 preload="none"
                 className="remote-stream-player"
+                style={{ visibility: loading ? 'hidden' : 'visible' }}
             />
-            <KeyboardInput sendToServer={sentToDataChannel} />
-            <MouseInput sendToServer={sentToDataChannel} />
+            {
+                loading
+                    ? null
+                    : <>
+                        <KeyboardInput sendToServer={sentToDataChannel} />
+                        <MouseInput sendToServer={sentToDataChannel} />
+                    </>
+            }
         </>
     );
 }

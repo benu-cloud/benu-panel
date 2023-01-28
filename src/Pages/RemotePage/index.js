@@ -15,7 +15,7 @@ const { Title } = Typography;
 const RemotePage = () => {
     let { id } = useParams();
     let navigate = useNavigate();
-    const [loading, setloading] = useState(false);
+    const [loading, setLoading] = useState(true);
     const videoRef = useRef(null);
     const { fullScreen, ToggleFullScreen } = useFullScreen(videoRef);
 
@@ -36,11 +36,12 @@ const RemotePage = () => {
                                 <img src={loadingLogo} alt="benu loading icon" />
                                 <Title level={4}>Loading...</Title>
                             </div>
-                            : <div ref={videoRef}>
-                                <RemoteMenu fullScreen={fullScreen} toggleFullScreen={ToggleFullScreen} />
-                                <LiveStream otherPeerid={id} />
-                            </div>
+                            : null
                     }
+                    <div ref={videoRef}>
+                        <RemoteMenu loading={loading} fullScreen={fullScreen} toggleFullScreen={ToggleFullScreen} />
+                        <LiveStream loading={loading} setLoading={setLoading} otherPeerid={id} />
+                    </div>
                 </Col>
             </Row>
         </MainLayout>
