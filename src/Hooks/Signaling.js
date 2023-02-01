@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import useWebRtcStats from "./WebrtcStats";
 const onIceCandidate = (type, event, ws, otherPeerid) => {
+    return;
     ws.send(JSON.stringify({
         type: "candidate",
         name: otherPeerid,
@@ -15,10 +16,15 @@ const useSignaling = (otherPeerid) => {
     const [videoPeerConnectionState, setVideoPeerConnectionState] = useState({});
     const [audioPeerConnectionState, setAudioPeerConnectionState] = useState({});
     useEffect(() => {
-
-        const videoPeerConnection = new RTCPeerConnection();
-        const audioPeerConnection = new RTCPeerConnection();
-
+        const iceConfiguration = {
+            'iceServers': [
+                { 'urls': 'stun:stun.l.google.com:19302' }
+            ]
+        };
+        const videoPeerConnection = new RTCPeerConnection(iceConfiguration);
+        const audioPeerConnection = new RTCPeerConnection(iceConfiguration);
+        videoPeerConnection.addTransceiver("video", { direction: "recvonly" });
+        audioPeerConnection.addTransceiver("audio", { direction: "recvonly" });
         const ws = new WebSocket(`wss://signaling.darkube.app/ws`);
 
         videoPeerConnection.addEventListener('icecandidate', e => onIceCandidate("video", e, ws, otherPeerid));

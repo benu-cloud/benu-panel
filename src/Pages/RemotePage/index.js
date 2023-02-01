@@ -20,7 +20,7 @@ const RemotePage = () => {
         navigate("/404");
     }
 
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(false);
     const videoRef = useRef(null);
     const { fullScreen, ToggleFullScreen } = useFullScreen(videoRef);
 
