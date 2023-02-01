@@ -30,7 +30,7 @@ const LiveStream = ({ otherPeerid, loading, setLoading }) => {
             datachannel.current = obj.channel;
         }
         setTimeout(() => setLoading(false), 3000);
-    }, [videoPeerConnection, audioPeerConnection])
+    }, [videoPeerConnection, audioPeerConnection, setLoading])
 
     return (
         <>

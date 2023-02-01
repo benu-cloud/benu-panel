@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Row, Col, Typography } from 'antd';
 
@@ -15,16 +15,14 @@ const { Title } = Typography;
 const RemotePage = () => {
     let { id } = useParams();
     let navigate = useNavigate();
+    const validPeerIdRegex = /^([0-9a-z]{3}-[0-9a-z]{3}-[0-9a-z]{3})$/;
+    if (!validPeerIdRegex.test(id)) {
+        navigate("/404");
+    }
+
     const [loading, setLoading] = useState(true);
     const videoRef = useRef(null);
     const { fullScreen, ToggleFullScreen } = useFullScreen(videoRef);
-
-    useEffect(() => {
-        const validPeerIdRegex = /^([0-9a-z]{3}-[0-9a-z]{3}-[0-9a-z]{3})$/;
-        if (!validPeerIdRegex.test(id)) {
-            navigate("/404");
-        }
-    }, [])
 
     return (
         <MainLayout renderHeader={false} renderFotter={false}>

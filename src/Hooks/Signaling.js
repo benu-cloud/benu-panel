@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-
+import useWebRtcStats from "./WebrtcStats";
 const onIceCandidate = (type, event, ws, otherPeerid) => {
     ws.send(JSON.stringify({
         type: "candidate",
@@ -16,7 +16,6 @@ const useSignaling = (otherPeerid) => {
     const [audioPeerConnectionState, setAudioPeerConnectionState] = useState({});
     useEffect(() => {
 
-        let peerid;
         const videoPeerConnection = new RTCPeerConnection();
         const audioPeerConnection = new RTCPeerConnection();
 
@@ -38,7 +37,6 @@ const useSignaling = (otherPeerid) => {
                     switch (type) {
                         case "login":
                             if (payload.success) {
-                                peerid = payload.id;
                                 videoPeerConnection.createOffer()
                                     .then((offer) => videoPeerConnection.setLocalDescription(offer))
                                     .then(() => {
@@ -94,8 +92,10 @@ const useSignaling = (otherPeerid) => {
                         case "answer":
                             let video1 = payload.answer.video;
                             let audio1 = payload.answer.audio;
-                            if (video1 && audio1) {
+                            if (video1) {
                                 videoPeerConnection.setRemoteDescription(video1);
+                            }
+                            if (audio1) {
                                 audioPeerConnection.setRemoteDescription(audio1);
                             }
                             break;
@@ -121,6 +121,7 @@ const useSignaling = (otherPeerid) => {
         }
         console.log('useEffect inside useSignailng');
         const closeWebsocket = () => {
+            ws.onmessage = undefined;
             if (ws.readyState === 1) {
                 ws.close();
             } else {
@@ -137,7 +138,8 @@ const useSignaling = (otherPeerid) => {
 
     return {
         videoPeerConnection: videoPeerConnectionState,
-        audioPeerConnection: audioPeerConnectionState
+        audioPeerConnection: audioPeerConnectionState,
+        stats: useWebRtcStats(videoPeerConnectionState)
     }
 }
 
