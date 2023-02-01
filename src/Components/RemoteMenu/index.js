@@ -26,7 +26,7 @@ const RemoteMenu = ({ fullScreen, toggleFullScreen, sendACD, loading }) => {
                                 <StreamStata />
                             </Row>
                         </Col>
-                        <Col span={4} className="collaps-icon-box" onClick={() => setMenuCollaps(!menuCollaps)} >{menuCollaps ? <DownOutlined /> : <UpOutlined />}</Col>
+                        <Col span={4} className="collaps-icon-box" onClick={() => setMenuCollaps(!menuCollaps)} >{menuCollaps ? <UpOutlined /> : <DownOutlined />}</Col>
                         {
                             menuCollaps
                                 ? <>
