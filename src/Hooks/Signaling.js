@@ -1,13 +1,12 @@
 import { useEffect, useState } from "react";
 import useWebRtcStats from "./WebrtcStats";
 const onIceCandidate = (type, event, ws, otherPeerid) => {
-    return;
     ws.send(JSON.stringify({
         type: "candidate",
         name: otherPeerid,
         payload: {
-            video: type === "video" ? event.candidate : undefined,
-            audio: type === "audio" ? event.candidate : undefined
+            video: type === "video" ? [event.candidate] : undefined,
+            audio: type === "audio" ? [event.candidate] : undefined
         }
     }));
 }
@@ -15,6 +14,7 @@ const onIceCandidate = (type, event, ws, otherPeerid) => {
 const useSignaling = (otherPeerid) => {
     const [videoPeerConnectionState, setVideoPeerConnectionState] = useState({});
     const [audioPeerConnectionState, setAudioPeerConnectionState] = useState({});
+    const [exit, setExit] = useState(false);
     useEffect(() => {
         const iceConfiguration = {
             'iceServers': [
@@ -98,24 +98,31 @@ const useSignaling = (otherPeerid) => {
                         case "answer":
                             let video1 = payload.answer.video;
                             let audio1 = payload.answer.audio;
-                            if (video1) {
+                            console.log("video1: ", video1);
+                            console.log("audio1: ", audio1);
+                            if (video1 && video1.type != "unknown") {
                                 videoPeerConnection.setRemoteDescription(video1);
                             }
-                            if (audio1) {
+                            if (audio1 && audio1.type != "unknown") {
                                 audioPeerConnection.setRemoteDescription(audio1);
                             }
                             break;
                         case "candidate":
-                            let video2 = payload.answer.video;
-                            let audio2 = payload.answer.audio;
+                            let video2 = payload.candidate.video;
+                            let audio2 = payload.candidate.audio;
                             if (video2) {
-                                videoPeerConnection.addIceCandidate(video2);
+                                video2.forEach(ice => {
+                                    videoPeerConnection.addIceCandidate(ice);
+                                });
                             }
                             if (audio2) {
-                                audioPeerConnection.addIceCandidate(audio2);
+                                audio2.forEach(ice => {
+                                    audioPeerConnection.addIceCandidate(ice);
+                                });
                             }
                             break;
                         case "leave":
+                            setExit(true);
                             break;
                         default:
                             break
@@ -145,7 +152,8 @@ const useSignaling = (otherPeerid) => {
     return {
         videoPeerConnection: videoPeerConnectionState,
         audioPeerConnection: audioPeerConnectionState,
-        stats: useWebRtcStats(videoPeerConnectionState)
+        stats: useWebRtcStats(videoPeerConnectionState),
+        exit
     }
 }
 

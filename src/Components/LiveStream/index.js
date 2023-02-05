@@ -1,19 +1,27 @@
 import React from "react";
 import { useEffect, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import KeyboardInput from "../UserInputs/Keyboard";
 import MouseInput from "../UserInputs/Mouse";
 import useSignaling from "../../Hooks/Signaling";
 import './index.css';
+import poster from "../../Assets/benu-logo-type-black.png";
 
 const LiveStream = ({ otherPeerid, loading, setLoading }) => {
     const videoPLayer = useRef(null);
     const datachannel = useRef(null);
+    let navigate = useNavigate();
     console.log('main');
 
-    const { videoPeerConnection, audioPeerConnection } = useSignaling(otherPeerid);
+    const { videoPeerConnection, audioPeerConnection, exit } = useSignaling(otherPeerid);
     const sentToDataChannel = (msg) => {
         datachannel.current && datachannel.current.send(msg)
     }
+    useEffect(()=>{
+        if(exit){
+            navigate('/');
+        }
+    }, [exit]);
     useEffect(() => {
         console.log('useEffect inside main');
         const stream = new MediaStream();
@@ -37,10 +45,13 @@ const LiveStream = ({ otherPeerid, loading, setLoading }) => {
             <video
                 ref={videoPLayer}
                 autoPlay
+                controls=""
                 preload="none"
                 className="remote-stream-player"
+                poster={poster}
                 style={{ display: loading ? 'none' : 'block' }}
-            />
+            >
+            </video>
             {
                 loading
                     ? null

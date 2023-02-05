@@ -36,7 +36,7 @@ const MouseInput = ({ sendToServer }) => {
         }
     } else {
         evenLisnter = {
-            onClick: makePointerLock
+            // onClick: makePointerLock
         }
     }
     useEffect(() => {
