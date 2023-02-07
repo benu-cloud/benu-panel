@@ -57,7 +57,7 @@ const useWebRtcStats = (peerConnection) => {
                                 connectionDetails.framesPerSecond = report.framesPerSecond;
                                 connectionDetails.packetsReceived = report.packetsReceived;
                                 connectionDetails.packetsLost = report.packetsLost;
-                                connectionDetails.packetsLostPct = (report.packetsLost / report.packetsReceived * 100).toFixed(2) + "%";
+                                connectionDetails.packetsLostPct = (report.packetsLost / report.packetsReceived * 100);
                             }
                             break;
                         case "track":

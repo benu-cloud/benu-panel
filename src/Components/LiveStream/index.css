@@ -1,4 +1,5 @@
 .remote-stream-player {
-    width: 100%;
-    height: calc(100vh - 3px);
+    max-width: 100%;
+    max-height: calc(100vh - 3px);
+    margin: auto;
 }
