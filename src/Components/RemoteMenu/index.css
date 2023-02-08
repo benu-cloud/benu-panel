@@ -3,7 +3,7 @@
     top: 5%;
     right: 5%;
     border-radius: 5px;
-    background: #b7cee0;
+    background: rgba(255, 255, 255, 0.7);
     width: 158px;
     z-index: 1;
 }
@@ -13,7 +13,7 @@
 }
 
 .remote-menu-container img {
-    width: 42px;
+    width: 50px;
 }
 
 .remote-menu-item:first-child {

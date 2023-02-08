@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Col, Row, Typography } from 'antd';
-import { FullscreenOutlined, DownOutlined, UpOutlined } from '@ant-design/icons';
+import { ExpandOutlined, CompressOutlined, DownOutlined, UpOutlined } from '@ant-design/icons';
 import emitter from '../../Modules/emitter';
 import StreamStata from "../StreamState";
 import './index.css';
@@ -22,7 +22,7 @@ const RemoteMenu = ({ fullScreen, toggleFullScreen, sendACD, loading }) => {
                     : <Row className="remote-menu-container">
                         <Col span={20} className="remote-menu-item">
                             <Row onClick={() => setMenuCollaps(!menuCollaps)}>
-                                <Col span={12}><img src={logo} alt="benu logo"/></Col>
+                                <Col span={12}><img src={logo} alt="benu logo" /></Col>
                                 <StreamStata />
                             </Row>
                         </Col>
@@ -39,7 +39,13 @@ const RemoteMenu = ({ fullScreen, toggleFullScreen, sendACD, loading }) => {
                                                         : <>Full screen</>
                                                 }
                                             </Col>
-                                            <Col span={2}><FullscreenOutlined /></Col>
+                                            <Col span={2}>
+                                                {
+                                                    fullScreen
+                                                        ? <CompressOutlined />
+                                                        : <ExpandOutlined />
+                                                }
+                                            </Col>
                                         </Row>
                                     </Col>
                                     <Col span={24} className="remote-menu-item" onClick={() => emitter.emit('sendACD')}>
@@ -49,7 +55,7 @@ const RemoteMenu = ({ fullScreen, toggleFullScreen, sendACD, loading }) => {
                                     </Col>
                                     <Col span={24} className="remote-menu-item" onClick={() => navigate("/")}>
                                         <Row>
-                                            <Col span={24}><Text type="danger">Disconnect</Text></Col>
+                                            <Col span={24}><Text style={{ color: "#AF1D1D" }}>Disconnect</Text></Col>
                                         </Row>
                                     </Col>
                                 </>

@@ -1,14 +1,15 @@
 import React from 'react';
 import { Form, Input, Button, message } from 'antd';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios'
 
 const ConnectionRequestForm = () => {
     let navigate = useNavigate();
     const [messageApi, contextHolder] = message.useMessage();
-    const error = () => {
+    const showError = (msg) => {
         messageApi.open({
             type: 'error',
-            content: "Couldn't find the remote you're trying to connect. You might not be signed in with the right account.",
+            content: msg,
             duration: 8,
         });
     };
@@ -17,9 +18,17 @@ const ConnectionRequestForm = () => {
         let peerid = values.peerid;
         const validPeerIdRegex = /^([0-9a-z]{3}-[0-9a-z]{3}-[0-9a-z]{3})$/;
         if (validPeerIdRegex.test(peerid)) {
-            navigate(`/${peerid}`);
+            axios.get(`https://signaling.benucloud.com/checkinfo/${peerid}`)
+                .then(() => {
+                    navigate(`/${peerid}`);
+                })
+                .catch((error) => {
+                    if (error.response.data) {
+                        showError(error.response.data.message);
+                    }
+                })
         } else {
-            error();
+            showError("Couldn't find the remote you're trying to connect. You might not be signed in with the right account.");
         }
     };
 
