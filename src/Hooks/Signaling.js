@@ -100,10 +100,10 @@ const useSignaling = (otherPeerid) => {
                             let audio1 = payload.answer.audio;
                             console.log("video1: ", video1);
                             console.log("audio1: ", audio1);
-                            if (video1 && video1.type != "unknown") {
+                            if (video1 && video1.type !== "unknown") {
                                 videoPeerConnection.setRemoteDescription(video1);
                             }
-                            if (audio1 && audio1.type != "unknown") {
+                            if (audio1 && audio1.type !== "unknown") {
                                 audioPeerConnection.setRemoteDescription(audio1);
                             }
                             break;

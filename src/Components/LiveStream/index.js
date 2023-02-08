@@ -21,7 +21,7 @@ const LiveStream = ({ otherPeerid, loading, setLoading }) => {
         if(exit){
             navigate('/');
         }
-    }, [exit]);
+    }, [exit, navigate]);
     useEffect(() => {
         console.log('useEffect inside main');
         const stream = new MediaStream();

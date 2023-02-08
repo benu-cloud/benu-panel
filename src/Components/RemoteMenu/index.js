@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Col, Row, Typography } from 'antd';
-import { FullscreenOutlined, WifiOutlined, DownOutlined, UpOutlined } from '@ant-design/icons';
+import { FullscreenOutlined, DownOutlined, UpOutlined } from '@ant-design/icons';
 import emitter from '../../Modules/emitter';
 import StreamStata from "../StreamState";
 import './index.css';
@@ -22,7 +22,7 @@ const RemoteMenu = ({ fullScreen, toggleFullScreen, sendACD, loading }) => {
                     : <Row className="remote-menu-container">
                         <Col span={20} className="remote-menu-item">
                             <Row onClick={() => setMenuCollaps(!menuCollaps)}>
-                                <Col span={12}><img src={logo} /></Col>
+                                <Col span={12}><img src={logo} alt="benu logo"/></Col>
                                 <StreamStata />
                             </Row>
                         </Col>
