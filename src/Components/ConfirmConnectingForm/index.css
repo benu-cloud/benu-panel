@@ -1,0 +1,22 @@
+.confirm-connecting-box {
+    font-size: 17px;
+    height: 90vh;
+    text-align: center;
+    padding-top: 35vh;
+}
+
+.confirm-connecting-box p {
+    font-size: 18px;
+    margin-bottom: 30px;
+}
+
+.confirm-connecting-box p span {
+    font-weight: bold;
+}
+
+.confirm-connecting-box-buttun-container{
+    display: flex;
+    justify-content: space-between;
+    width: 200px;
+    margin: auto;
+}

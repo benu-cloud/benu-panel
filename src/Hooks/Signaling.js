@@ -14,6 +14,7 @@ const onIceCandidate = (type, event, ws, otherPeerid) => {
 const useSignaling = (otherPeerid) => {
     const [videoPeerConnectionState, setVideoPeerConnectionState] = useState({});
     const [audioPeerConnectionState, setAudioPeerConnectionState] = useState({});
+    const [datachannel, setDatachannel] = useState({});
     const [exit, setExit] = useState({ status: false, msg: null });
     useEffect(() => {
         const iceConfiguration = {
@@ -30,6 +31,11 @@ const useSignaling = (otherPeerid) => {
 
         videoPeerConnection.addEventListener('icecandidate', e => onIceCandidate("video", e, ws, otherPeerid));
         audioPeerConnection.addEventListener('icecandidate', e => onIceCandidate("audio", e, ws, otherPeerid));
+
+        setDatachannel(audioPeerConnection.createDataChannel("controlls", {
+            ordered: true,
+            maxRetransmits: 1,
+        }));
 
         setAudioPeerConnectionState(audioPeerConnection);
         setVideoPeerConnectionState(videoPeerConnection);
@@ -60,8 +66,8 @@ const useSignaling = (otherPeerid) => {
                                                         }
                                                     }
                                                 }));
-                                                timeOutToGetAnswer = setTimeout(()=>{
-                                                    setExit({status:true, msg:"The remote device won't accept the connection!"});
+                                                timeOutToGetAnswer = setTimeout(() => {
+                                                    setExit({ status: true, msg: "The remote device won't accept the connection!" });
                                                 }, 10000);
                                             });
                                     });
@@ -127,7 +133,7 @@ const useSignaling = (otherPeerid) => {
                             }
                             break;
                         case "leave":
-                            setExit({status:true, msg:"remote close connection"});
+                            setExit({ status: true, msg: "remote close connection" });
                             break;
                         default:
                             break
@@ -158,6 +164,7 @@ const useSignaling = (otherPeerid) => {
     return {
         videoPeerConnection: videoPeerConnectionState,
         audioPeerConnection: audioPeerConnectionState,
+        datachannel,
         stats: useWebRtcStats(videoPeerConnectionState),
         exit,
     }

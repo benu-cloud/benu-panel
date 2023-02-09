@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Form, Input, Button, message } from 'antd';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios'
+import axios from 'axios';
 
 const ConnectionRequestForm = () => {
     let navigate = useNavigate();
@@ -22,9 +22,10 @@ const ConnectionRequestForm = () => {
             setLoading(true);
             axios.get(`https://signaling.benucloud.com/checkinfo/${peerid}`)
                 .then(() => {
-                    setLoading(true);
-                    sessionStorage.setItem('incoming', "indirect");
-                    navigate(`/${peerid}`);
+                    setLoading(false);
+                    navigate(`/${peerid}`, {
+                        state: "indirect"
+                    });
                 })
                 .catch((error) => {
                     setLoading(false);

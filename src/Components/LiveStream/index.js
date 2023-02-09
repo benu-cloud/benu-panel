@@ -10,12 +10,11 @@ import poster from "../../Assets/benu-logo-type-black.png";
 
 const LiveStream = ({ otherPeerid, loading, setLoading }) => {
     const videoPLayer = useRef(null);
-    const datachannel = useRef(null);
     let navigate = useNavigate();
 
-    const { videoPeerConnection, audioPeerConnection, exit } = useSignaling(otherPeerid);
+    const { videoPeerConnection, audioPeerConnection, datachannel, exit } = useSignaling(otherPeerid);
     const sentToDataChannel = (msg) => {
-        datachannel.current && datachannel.current.send(msg)
+        datachannel && datachannel.send(msg)
     }
     useEffect(() => {
         if (exit.status) {
@@ -36,10 +35,15 @@ const LiveStream = ({ otherPeerid, loading, setLoading }) => {
         audioPeerConnection.ontrack = (event) => {
             stream.addTrack(event.track);
         };
-        audioPeerConnection.ondatachannel = (obj) => {
-            datachannel.current = obj.channel;
+        console.log("datachannel", datachannel);
+        datachannel.onopen = (event) => {
+            console.log('data channel opened!')
+            datachannel.send('Hi you!');
         }
-    }, [videoPeerConnection, audioPeerConnection, setLoading])
+        datachannel.onmessage = (event) => {
+            console.log("got message from data channel: ",event.data);
+        }
+    }, [videoPeerConnection, audioPeerConnection, datachannel, setLoading])
 
     return (
         <>

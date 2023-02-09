@@ -8,14 +8,14 @@ const KeyboardInput = ({ sendToServer }) => {
         let keyUpHandler = (e) => {
             e.preventDefault();
             if (e.code in pressedKey) {
-                console.log(`${e.code} => up`);
+                console.log(`${e.key} => up`);
                 delete pressedKey[e.code];
             }
         };
         let keyDownHandler = (e) => {
             e.preventDefault();
             if (!(e.code in pressedKey)) {
-                console.log(`${e.code} => down`);
+                console.log(`${e.key} => down`);
                 pressedKey[e.code] = "";
             }
         };

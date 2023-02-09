@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { Row, Col, Typography, Button } from 'antd';
 
 import MainLayout from '../../Layout/Main';
@@ -9,14 +9,16 @@ import "./index.css";
 import loadingLogo from "../../Assets/logo-loading.png";
 import { useRef } from 'react';
 import useFullScreen from '../../Hooks/FullScreen';
+import ConfirmConnectingForm from '../../Components/ConfirmConnectingForm';
 
 const { Title } = Typography;
 
 const RemotePage = () => {
     let { id } = useParams();
     let navigate = useNavigate();
+    let incomingType = useLocation().state;
     const validPeerIdRegex = /^([0-9a-z]{3}-[0-9a-z]{3}-[0-9a-z]{3})$/;
-    const [confirmConnecting, setConfirmConnecting] = useState(sessionStorage.getItem('incoming') !== "indirect");
+    const [confirmConnecting, setConfirmConnecting] = useState(window.performance && (performance.navigation.type === performance.navigation.TYPE_RELOAD || incomingType !== "indirect"));
     if (!validPeerIdRegex.test(id)) {
         navigate("/404");
     }
@@ -30,10 +32,7 @@ const RemotePage = () => {
                 <Col span={24}>
                     {
                         confirmConnecting
-                            ? <div className='confirm-connecting-box'>
-                                you are trying to connect #{id}
-                                <Button>Connect</Button>
-                            </div>
+                            ? <ConfirmConnectingForm setConfirmConnecting={setConfirmConnecting} peerid={id}/>
                             : <>
                                 {
                                     loading
