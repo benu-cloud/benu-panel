@@ -1,6 +1,7 @@
 import React from "react";
 import { useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
+import { message } from "antd";
 import KeyboardInput from "../UserInputs/Keyboard";
 import MouseInput from "../UserInputs/Mouse";
 import useSignaling from "../../Hooks/Signaling";
@@ -11,17 +12,18 @@ const LiveStream = ({ otherPeerid, loading, setLoading }) => {
     const videoPLayer = useRef(null);
     const datachannel = useRef(null);
     let navigate = useNavigate();
-    console.log('main');
 
     const { videoPeerConnection, audioPeerConnection, exit } = useSignaling(otherPeerid);
     const sentToDataChannel = (msg) => {
         datachannel.current && datachannel.current.send(msg)
     }
-    useEffect(()=>{
-        if(exit){
+    useEffect(() => {
+        if (exit.status) {
+            setLoading(false);
             navigate('/');
+            message.error(exit.msg, 5);
         }
-    }, [exit, navigate]);
+    }, [exit, navigate, setLoading]);
     useEffect(() => {
         console.log('useEffect inside main');
         const stream = new MediaStream();

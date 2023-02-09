@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Form, Input, Button, message } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios'
@@ -6,6 +6,7 @@ import axios from 'axios'
 const ConnectionRequestForm = () => {
     let navigate = useNavigate();
     const [messageApi, contextHolder] = message.useMessage();
+    const [loading, setLoading] = useState(false);
     const showError = (msg) => {
         messageApi.open({
             type: 'error',
@@ -18,11 +19,14 @@ const ConnectionRequestForm = () => {
         let peerid = values.peerid;
         const validPeerIdRegex = /^([0-9a-z]{3}-[0-9a-z]{3}-[0-9a-z]{3})$/;
         if (validPeerIdRegex.test(peerid)) {
+            setLoading(true);
             axios.get(`https://signaling.benucloud.com/checkinfo/${peerid}`)
                 .then(() => {
+                    setLoading(true);
                     navigate(`/${peerid}`);
                 })
                 .catch((error) => {
+                    setLoading(false);
                     if (error.response.data) {
                         showError(error.response.data.message);
                     }
@@ -52,7 +56,7 @@ const ConnectionRequestForm = () => {
                     <Input placeholder='Enter your code or link' />
                 </Form.Item>
                 <Form.Item>
-                    <Button type="primary" block htmlType="submit">
+                    <Button type="primary" loading={loading} block htmlType="submit">
                         Login
                     </Button>
                 </Form.Item>
