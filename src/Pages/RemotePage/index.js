@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { Row, Col, Typography } from 'antd';
+import { Row, Col, Typography, Button } from 'antd';
 
 import MainLayout from '../../Layout/Main';
 import LiveStream from '../../Components/LiveStream';
@@ -16,10 +16,10 @@ const RemotePage = () => {
     let { id } = useParams();
     let navigate = useNavigate();
     const validPeerIdRegex = /^([0-9a-z]{3}-[0-9a-z]{3}-[0-9a-z]{3})$/;
+    const [confirmConnecting, setConfirmConnecting] = useState(sessionStorage.getItem('incoming') !== "indirect");
     if (!validPeerIdRegex.test(id)) {
         navigate("/404");
     }
-
     const [loading, setLoading] = useState(true);
     const videoRef = useRef(null);
     const { fullScreen, ToggleFullScreen } = useFullScreen(videoRef);
@@ -29,17 +29,26 @@ const RemotePage = () => {
             <Row style={{ padding: '0px' }}>
                 <Col span={24}>
                     {
-                        loading
-                            ? <div className="remotePageLoading">
-                                <img src={loadingLogo} alt="benu loading icon" />
-                                <Title level={4}>Loading...</Title>
+                        confirmConnecting
+                            ? <div className='confirm-connecting-box'>
+                                you are trying to connect #{id}
+                                <Button>Connect</Button>
                             </div>
-                            : null
+                            : <>
+                                {
+                                    loading
+                                        ? <div className="remotePageLoading">
+                                            <img src={loadingLogo} alt="benu loading icon" />
+                                            <Title level={4}>Loading...</Title>
+                                        </div>
+                                        : null
+                                }
+                                <div ref={videoRef}>
+                                    <RemoteMenu loading={loading} fullScreen={fullScreen} toggleFullScreen={ToggleFullScreen} />
+                                    <LiveStream loading={loading} setLoading={setLoading} otherPeerid={id} />
+                                </div>
+                            </>
                     }
-                    <div ref={videoRef}>
-                        <RemoteMenu loading={loading} fullScreen={fullScreen} toggleFullScreen={ToggleFullScreen} />
-                        <LiveStream loading={loading} setLoading={setLoading} otherPeerid={id} />
-                    </div>
                 </Col>
             </Row>
         </MainLayout>

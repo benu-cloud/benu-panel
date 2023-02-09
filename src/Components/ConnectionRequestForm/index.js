@@ -23,6 +23,7 @@ const ConnectionRequestForm = () => {
             axios.get(`https://signaling.benucloud.com/checkinfo/${peerid}`)
                 .then(() => {
                     setLoading(true);
+                    sessionStorage.setItem('incoming', "indirect");
                     navigate(`/${peerid}`);
                 })
                 .catch((error) => {
