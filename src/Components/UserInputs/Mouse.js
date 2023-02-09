@@ -23,7 +23,7 @@ const MouseInput = ({ sendToServer }) => {
     }
     const onWheel = (e) => {
         console.log(`scroll ${e.deltaX} --> ${-1 * e.deltaY}`);
-        sendToServer(`m,w,${e.deltaX},${e.deltaY}`);
+        sendToServer(`m,w,${e.deltaX},${-1 * e.deltaY}`);
     }
 
     const makePointerLock = () => {
