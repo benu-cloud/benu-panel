@@ -77,7 +77,6 @@ const useSignaling = (otherPeerid) => {
                             break;
                         case "offer":
                             var { video, audio } = payload.offer;
-                            console.log(video, audio);
                             if (video && audio) {
                                 videoPeerConnection.setRemoteDescription(video)
                                     .then(() => {
@@ -109,8 +108,6 @@ const useSignaling = (otherPeerid) => {
                             clearTimeout(timeOutToGetAnswer);
                             let video1 = payload.answer.video;
                             let audio1 = payload.answer.audio;
-                            console.log("video1: ", video1);
-                            console.log("audio1: ", audio1);
                             if (video1 && video1.type !== "unknown") {
                                 videoPeerConnection.setRemoteDescription(video1);
                             }
@@ -133,17 +130,16 @@ const useSignaling = (otherPeerid) => {
                             }
                             break;
                         case "leave":
-                            setExit({ status: true, msg: "remote close connection" });
+                            setExit({ status: true, msg: "Remote device closed the connection" });
                             break;
                         default:
                             break
                     }
                 }
             } catch (error) {
-                console.log(error);
+                // console.log(error);
             }
         }
-        console.log('useEffect inside useSignailng');
         const closeWebsocket = () => {
             ws.onmessage = undefined;
             if (ws.readyState === 1) {
@@ -153,7 +149,6 @@ const useSignaling = (otherPeerid) => {
             }
         }
         return () => {
-            console.log('useEffect inside useSignailng unmount');
             clearTimeout(timeOutToGetAnswer);
             closeWebsocket();
             videoPeerConnection.close();

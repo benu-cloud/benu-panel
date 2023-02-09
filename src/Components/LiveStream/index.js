@@ -26,7 +26,6 @@ const LiveStream = ({ otherPeerid, loading, setLoading }) => {
         }
     }, [exit, navigate, setLoading]);
     useEffect(() => {
-        console.log('useEffect inside main');
         const stream = new MediaStream();
 
         videoPLayer.current.srcObject = stream;
@@ -37,7 +36,6 @@ const LiveStream = ({ otherPeerid, loading, setLoading }) => {
         audioPeerConnection.ontrack = (event) => {
             stream.addTrack(event.track);
         };
-        console.log("datachannel", datachannel);
         datachannel.onopen = (event) => {
             datachannel.send('Hi you!');
         }

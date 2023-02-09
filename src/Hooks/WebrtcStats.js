@@ -83,8 +83,6 @@ const useWebRtcStats = (peerConnection) => {
             });
         }
         const interval = setInterval(() => fetchStat(), 250);
-        console.log('useWebrtcstate useEffet');
-        console.log('**', peerConnection);
         return () => {
             clearInterval(interval);
         }

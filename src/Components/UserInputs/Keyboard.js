@@ -8,7 +8,7 @@ const KeyboardInput = ({ sendToServer }) => {
         let keyUpHandler = (e) => {
             e.preventDefault();
             if (e.key in pressedKey) {
-                console.log(`${e.key} => up`);
+                // console.log(`${e.key} => up`);
                 sendToServer(`k,${e.key},0`);
                 delete pressedKey[e.key];
             }
@@ -16,14 +16,14 @@ const KeyboardInput = ({ sendToServer }) => {
         let keyDownHandler = (e) => {
             e.preventDefault();
             if (!(e.key in pressedKey)) {
-                console.log(`${e.key} => down`);
+                // console.log(`${e.key} => down`);
                 sendToServer(`k,${e.key},1`);
                 pressedKey[e.key] = "";
             }
         };
         let onBlur = () => {
             for (const i in pressedKey) {
-                console.log(`${i} => up`);
+                // console.log(`${i} => up`);
                 sendToServer(`k,${i},0`);
             }
             pressedKey = {};

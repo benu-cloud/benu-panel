@@ -8,21 +8,21 @@ const MouseInput = ({ sendToServer }) => {
     let evenLisnter = {};
 
     const onMouseMove = (e) => {
-        console.log(`x: ${e.movementX}, y: ${e.movementY}`);
+        // console.log(`x: ${e.movementX}, y: ${e.movementY}`);
         sendToServer(`m,v,${e.movementX},${e.movementY}`);
     }
 
     const onMouseDown = (e) => {
-        console.log(`${e.button} --> ${e.type}`);
+        // console.log(`${e.button} --> ${e.type}`);
         sendToServer(`m,c,${e.button},1`);
     }
 
     const onMouseUp = (e) => {
-        console.log(`${e.button} --> ${e.type}`);
+        // console.log(`${e.button} --> ${e.type}`);
         sendToServer(`m,c,${e.button},0`);
     }
     const onWheel = (e) => {
-        console.log(`scroll ${e.deltaX} --> ${-1 * e.deltaY}`);
+        // console.log(`scroll ${e.deltaX} --> ${-1 * e.deltaY}`);
         sendToServer(`m,w,${e.deltaX},${-1 * e.deltaY}`);
     }
 
