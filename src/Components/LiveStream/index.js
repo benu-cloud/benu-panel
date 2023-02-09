@@ -36,9 +36,6 @@ const LiveStream = ({ otherPeerid, loading, setLoading }) => {
         audioPeerConnection.ontrack = (event) => {
             stream.addTrack(event.track);
         };
-        datachannel.onopen = (event) => {
-            datachannel.send('Hi you!');
-        }
     }, [videoPeerConnection, audioPeerConnection, datachannel, setLoading])
 
     return (
