@@ -13,16 +13,18 @@ const ConfirmConnectingForm = ({ setConfirmConnecting, peerid }) => {
     const confirmConnecting = () => {
         setLoading(true);
         axios.get(`https://signaling.benucloud.com/checkinfo/${peerid}`)
-            .then(() => {
+            .then((response) => {
                 setLoading(false);
-                setConfirmConnecting(false);
+                if (response.data.status === 200) {
+                    setConfirmConnecting(false);
+                } else {
+                    message.error(response.data.message, 5);
+                    navigate("/");
+                }
             })
             .catch((error) => {
                 setLoading(false);
-                if (error.response.data) {
-                    message.error(error.response.data.message, 5);
-                    navigate("/");
-                }
+                message.error(error.message, 5);
             })
     }
 

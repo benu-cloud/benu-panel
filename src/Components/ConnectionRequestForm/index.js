@@ -21,17 +21,19 @@ const ConnectionRequestForm = () => {
         if (validPeerIdRegex.test(peerid)) {
             setLoading(true);
             axios.get(`https://signaling.benucloud.com/checkinfo/${peerid}`)
-                .then(() => {
+                .then((response) => {
                     setLoading(false);
-                    navigate(`/${peerid}`, {
-                        state: "indirect"
-                    });
+                    if (response.data.status === 200) {
+                        navigate(`/${peerid}`, {
+                            state: "indirect"
+                        });
+                    }else{
+                        showError(response.data.message);
+                    }
                 })
                 .catch((error) => {
                     setLoading(false);
-                    if (error.response.data) {
-                        showError(error.response.data.message);
-                    }
+                    showError(error.message);
                 })
         } else {
             showError("Couldn't find the remote you're trying to connect. You might not be signed in with the right account.");

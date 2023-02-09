@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
-import { Row, Col, Typography, Button } from 'antd';
+import { Row, Col, Typography } from 'antd';
 
 import MainLayout from '../../Layout/Main';
 import LiveStream from '../../Components/LiveStream';

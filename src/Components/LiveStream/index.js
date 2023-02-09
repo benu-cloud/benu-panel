@@ -13,9 +13,11 @@ const LiveStream = ({ otherPeerid, loading, setLoading }) => {
     let navigate = useNavigate();
 
     const { videoPeerConnection, audioPeerConnection, datachannel, exit } = useSignaling(otherPeerid);
+
     const sentToDataChannel = (msg) => {
-        datachannel && datachannel.send(msg)
+        datachannel.readyState === "open" && datachannel.send(msg);
     }
+    
     useEffect(() => {
         if (exit.status) {
             setLoading(false);
@@ -37,11 +39,7 @@ const LiveStream = ({ otherPeerid, loading, setLoading }) => {
         };
         console.log("datachannel", datachannel);
         datachannel.onopen = (event) => {
-            console.log('data channel opened!')
             datachannel.send('Hi you!');
-        }
-        datachannel.onmessage = (event) => {
-            console.log("got message from data channel: ",event.data);
         }
     }, [videoPeerConnection, audioPeerConnection, datachannel, setLoading])
 

@@ -7,23 +7,25 @@ const KeyboardInput = ({ sendToServer }) => {
         const adcEvent = emitter.addListener('sendACD', () => { console.log('get Alt+Ctrl+Del') });
         let keyUpHandler = (e) => {
             e.preventDefault();
-            if (e.code in pressedKey) {
+            if (e.key in pressedKey) {
                 console.log(`${e.key} => up`);
-                delete pressedKey[e.code];
+                sendToServer(`k,${e.key},0`);
+                delete pressedKey[e.key];
             }
         };
         let keyDownHandler = (e) => {
             e.preventDefault();
-            if (!(e.code in pressedKey)) {
+            if (!(e.key in pressedKey)) {
                 console.log(`${e.key} => down`);
-                pressedKey[e.code] = "";
+                sendToServer(`k,${e.key},1`);
+                pressedKey[e.key] = "";
             }
         };
         let onBlur = () => {
             for (const i in pressedKey) {
                 console.log(`${i} => up`);
+                sendToServer(`k,${i},0`);
             }
-
             pressedKey = {};
         };
         window.addEventListener("blur", onBlur);
@@ -37,7 +39,7 @@ const KeyboardInput = ({ sendToServer }) => {
             window.removeEventListener("blur", onBlur);
             adcEvent.remove();
         }
-    }, []);
+    }, [sendToServer]);
 }
 
 export default KeyboardInput;
